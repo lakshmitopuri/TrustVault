@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>TrustVault | Secure Documents</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <header class="navbar">
+    <h2>🔐 TrustVault</h2>
+    <span>Secure Document Sharing</span>
+  </header>
+
+  <main class="container">
+    <section class="welcome">
+      <p class="tag">PRIVATE. SECURE. ACCOUNTABLE.</p>
+      <h1>Your documents.<br>Under your control.</h1>
+      <p>Manage confidential documents and control who can access them.</p>
+    </section>
+
+    <section class="login-card">
+      <h2>Welcome back</h2>
+      <p>Sign in to your TrustVault account</p>
+
+      <form id="loginForm">
+        <label for="email">Email address</label>
+        <input id="email" type="email" placeholder="you@example.com" required>
+
+        <label for="password">Password</label>
+        <input id="password" type="password" placeholder="Enter your password" required>
+
+        <button type="submit">Sign in</button>
+      </form>
+
+      <p id="message" role="status"></p>
+    
+    </section>
+    <section id="dashboard" hidden>
+  <h2>Your Documents</h2>
+
+  <label for="documentFile">Upload a document</label>
+  <input id="documentFile" type="file">
+
+  <button id="uploadButton" type="button">
+    Upload Document
+  </button>
+
+  <button id="loadButton" type="button">
+    View My Documents
+  </button>
+
+  <p id="dashboardMessage" role="status"></p>
+
+  <ul id="documentList"></ul>
+</section>
+  </main>
+
+  <footer>TrustVault · Secure document access</footer>
+  <script src="script.js"></script>
+</body>
+</html>

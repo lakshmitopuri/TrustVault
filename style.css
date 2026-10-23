@@ -1,0 +1,142 @@
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  font-family: Arial, sans-serif;
+  background: #f3f6fb;
+  color: #17233c;
+}
+
+.navbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px 8%;
+  background: white;
+  border-bottom: 1px solid #e3e8f0;
+}
+
+.navbar h2 {
+  margin: 0;
+  color: #2457d6;
+}
+
+.navbar span {
+  color: #62708a;
+  font-size: 14px;
+}
+
+.container {
+  width: min(1050px, 90%);
+  min-height: 75vh;
+  margin: 50px auto;
+  display: grid;
+  grid-template-columns: 1fr 380px;
+  gap: 50px;
+  align-items: center;
+}
+
+.tag {
+  color: #2457d6;
+  font-size: 12px;
+  font-weight: bold;
+  letter-spacing: 2px;
+}
+
+.welcome h1 {
+  font-size: 44px;
+  line-height: 1.15;
+}
+
+.welcome p:last-child {
+  max-width: 420px;
+  color: #62708a;
+  line-height: 1.7;
+}
+
+.login-card {
+  padding: 30px;
+  background: white;
+  border: 1px solid #e3e8f0;
+  border-radius: 16px;
+  box-shadow: 0 12px 35px #17233c12;
+}
+
+.login-card h2 {
+  margin-bottom: 8px;
+}
+
+.login-card > p {
+  color: #62708a;
+  font-size: 14px;
+}
+
+form {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-top: 25px;
+}
+
+label {
+  font-size: 14px;
+  font-weight: bold;
+}
+
+input {
+  width: 100%;
+  padding: 12px;
+  margin-bottom: 10px;
+  border: 1px solid #ccd5e3;
+  border-radius: 7px;
+  font-size: 15px;
+}
+
+button {
+  padding: 13px;
+  color: white;
+  background: #2457d6;
+  border: none;
+  border-radius: 7px;
+  font-size: 15px;
+  cursor: pointer;
+}
+
+button:hover {
+  background: #1945b3;
+}
+
+.note {
+  margin-top: 20px;
+  font-size: 12px !important;
+}
+
+#message {
+  overflow-wrap: anywhere;
+}
+
+footer {
+  padding: 20px;
+  text-align: center;
+  color: #62708a;
+  font-size: 13px;
+}
+
+@media (max-width: 750px) {
+  .navbar {
+    gap: 12px;
+    flex-wrap: wrap;
+  }
+
+  .container {
+    grid-template-columns: 1fr;
+    gap: 25px;
+    margin: 30px auto;
+  }
+
+  .welcome h1 {
+    font-size: 34px;
+  }
+}

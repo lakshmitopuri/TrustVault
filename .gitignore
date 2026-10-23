@@ -1,0 +1,7 @@
+﻿__pycache__/
+*.pyc
+venv/
+.venv/
+backend/trustvault.db
+backend/uploads/*
+.env
