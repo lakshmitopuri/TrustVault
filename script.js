@@ -1,6 +1,28 @@
 const API = "https://trustvault-2-mwgv.onrender.com";
 
 const loginForm = document.getElementById("loginForm");
+const registerForm = document.getElementById("registerForm");
+
+registerForm.addEventListener("submit", async (event) => {
+  event.preventDefault();
+
+  message.textContent = "Creating account...";
+
+  try {
+    const data = await apiRequest("/auth/register", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        email: document.getElementById("registerEmail").value.trim(),
+        password: document.getElementById("registerPassword").value
+      })
+    });
+
+    message.textContent = data.message || "Account created! You can now sign in.";
+  } catch (error) {
+    message.textContent = error.message;
+  }
+});
 const loginSection = document.querySelector(".login-card");
 const dashboard = document.getElementById("dashboard");
 const message = document.getElementById("message");
