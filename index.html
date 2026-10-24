@@ -3,16 +3,18 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>TrustVault | Secure Documents</title>
+  <title>TrustVault - Secure Document Sharing</title>
   <link rel="stylesheet" href="style.css">
 </head>
+
 <body>
-  <header class="navbar">
-    <h2>🔐 TrustVault</h2>
-    <span>Secure Document Sharing</span>
+  <header>
+    <h1>TrustVault</h1>
+    <p>Secure Document Sharing</p>
   </header>
 
   <main class="container">
+
     <section class="welcome">
       <p class="tag">PRIVATE. SECURE. ACCOUNTABLE.</p>
       <h1>Your documents.<br>Under your control.</h1>
@@ -20,56 +22,87 @@
     </section>
 
     <section class="login-card">
+
       <h2>Welcome back</h2>
       <p>Sign in to your TrustVault account</p>
 
+      <!-- Sign in form -->
       <form id="loginForm">
         <label for="email">Email address</label>
-        <input id="email" type="email" placeholder="you@example.com" required>
+        <input
+          id="email"
+          type="email"
+          placeholder="you@example.com"
+          required
+        >
 
         <label for="password">Password</label>
-        <input id="password" type="password" placeholder="Enter your password" required>
+        <input
+          id="password"
+          type="password"
+          placeholder="Enter your password"
+          required
+        >
 
         <button type="submit">Sign in</button>
-        </form>
-        <hr>
+      </form>
 
-<h3>Create an account</h3>
+      <hr>
 
-<form id="registerForm">
-  <label for="registerEmail">Email address</label>
-  <input id="registerEmail" type="email" placeholder="Enter email" required>
+      <!-- Separate registration form -->
+      <h3>Create an account</h3>
 
-  <label for="registerPassword">Password</label>
-  <input id="registerPassword" type="password" placeholder="At least 8 characters" required>
+      <form id="registerForm">
+        <label for="registerEmail">Email address</label>
+        <input
+          id="registerEmail"
+          type="email"
+          placeholder="Enter email"
+          required
+        >
 
-  <button type="submit">Register</button>
-</form>
-      
-      <p id="message" role="status"></p>
-    
+        <label for="registerPassword">Password</label>
+        <input
+          id="registerPassword"
+          type="password"
+          placeholder="At least 8 characters"
+          minlength="8"
+          required
+        >
+
+        <button type="submit">Register</button>
+      </form>
+
+      <p id="message" role="status" aria-live="polite"></p>
+
     </section>
+
+    <!-- Dashboard -->
     <section id="dashboard" hidden>
-  <h2>Your Documents</h2>
+      <h2>Your Documents</h2>
 
-  <label for="documentFile">Upload a document</label>
-  <input id="documentFile" type="file">
+      <label for="documentFile">Upload a document</label>
+      <input id="documentFile" type="file">
 
-  <button id="uploadButton" type="button">
-    Upload Document
-  </button>
+      <button id="uploadButton" type="button">
+        Upload Document
+      </button>
 
-  <button id="loadButton" type="button">
-    View My Documents
-  </button>
+      <button id="loadButton" type="button">
+        View My Documents
+      </button>
 
-  <p id="dashboardMessage" role="status"></p>
+      <p id="dashboardMessage" role="status" aria-live="polite"></p>
 
-  <ul id="documentList"></ul>
-</section>
+      <ul id="documentList"></ul>
+    </section>
+
   </main>
 
-  <footer>TrustVault · Secure document access</footer>
+  <footer>
+    TrustVault - Secure document access
+  </footer>
+
   <script src="script.js"></script>
 </body>
 </html>
