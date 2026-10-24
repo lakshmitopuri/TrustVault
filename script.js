@@ -2,27 +2,6 @@ const API = "https://trustvault-2-mwgv.onrender.com";
 
 const loginForm = document.getElementById("loginForm");
 const registerForm = document.getElementById("registerForm");
-
-registerForm.addEventListener("submit", async (event) => {
-  event.preventDefault();
-
-  message.textContent = "Creating account...";
-
-  try {
-    const data = await apiRequest("/auth/register", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        email: document.getElementById("registerEmail").value.trim(),
-        password: document.getElementById("registerPassword").value
-      })
-    });
-
-    message.textContent = data.message || "Account created! You can now sign in.";
-  } catch (error) {
-    message.textContent = error.message;
-  }
-});
 const loginSection = document.querySelector(".login-card");
 const dashboard = document.getElementById("dashboard");
 const message = document.getElementById("message");
@@ -31,6 +10,7 @@ const documentList = document.getElementById("documentList");
 
 let token = sessionStorage.getItem("trustvault_token");
 
+// Send requests to the backend
 async function apiRequest(path, options = {}) {
   const response = await fetch(API + path, {
     ...options,
@@ -49,37 +29,77 @@ async function apiRequest(path, options = {}) {
   return data;
 }
 
+// Show the dashboard after login
 function showDashboard() {
-  loginSection.hidden = true;
-  dashboard.hidden = false;
+  if (loginSection) loginSection.hidden = true;
+  if (dashboard) dashboard.hidden = false;
   loadDocuments();
 }
 
-loginForm.addEventListener("submit", async (event) => {
-  event.preventDefault();
+// Register a new account
+if (registerForm) {
+  registerForm.addEventListener("submit", async (event) => {
+    event.preventDefault();
 
-  message.textContent = "Signing in...";
+    message.textContent = "Creating account...";
 
-  try {
-    const data = await apiRequest("/auth/login", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        email: document.getElementById("email").value.trim(),
-        password: document.getElementById("password").value
-      })
-    });
+    try {
+      const data = await apiRequest("/auth/register", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          email: document.getElementById("registerEmail").value.trim(),
+          password: document.getElementById("registerPassword").value
+        })
+      });
 
-    token = data.access_token;
-    sessionStorage.setItem("trustvault_token", token);
-    message.textContent = "Login successful!";
-    showDashboard();
-  } catch (error) {
-    message.textContent = error.message;
-  }
-});
+      message.textContent =
+        data.message || "Account created! You can now sign in.";
 
+      registerForm.reset();
+    } catch (error) {
+      message.textContent = error.message;
+    }
+  });
+}
+
+// Log in
+if (loginForm) {
+  loginForm.addEventListener("submit", async (event) => {
+    event.preventDefault();
+
+    message.textContent = "Signing in...";
+
+    try {
+      const data = await apiRequest("/auth/login", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          email: document.getElementById("email").value.trim(),
+          password: document.getElementById("password").value
+        })
+      });
+
+      token = data.access_token;
+
+      if (!token) {
+        throw new Error("Login response did not include an access token.");
+      }
+
+      sessionStorage.setItem("trustvault_token", token);
+      message.textContent = "Login successful!";
+
+      showDashboard();
+    } catch (error) {
+      message.textContent = error.message;
+    }
+  });
+}
+
+// Load documents
 async function loadDocuments() {
+  if (!dashboardMessage || !documentList) return;
+
   dashboardMessage.textContent = "Loading documents...";
   documentList.replaceChildren();
 
@@ -106,7 +126,9 @@ async function loadDocuments() {
         try {
           const response = await fetch(
             `${API}/documents/${doc.id}/download`,
-            { headers: { Authorization: `Bearer ${token}` } }
+            {
+              headers: { Authorization: `Bearer ${token}` }
+            }
           );
 
           if (!response.ok) {
@@ -119,9 +141,11 @@ async function loadDocuments() {
 
           link.href = url;
           link.download = doc.filename || "document";
+          document.body.appendChild(link);
           link.click();
+          link.remove();
 
-          URL.revokeObjectURL(url);
+          setTimeout(() => URL.revokeObjectURL(url), 1000);
         } catch (error) {
           dashboardMessage.textContent = error.message;
         }
@@ -137,36 +161,47 @@ async function loadDocuments() {
   }
 }
 
-document.getElementById("loadButton").addEventListener("click", loadDocuments);
+// Reload documents button
+const loadButton = document.getElementById("loadButton");
 
-document.getElementById("uploadButton").addEventListener("click", async () => {
-  const fileInput = document.getElementById("documentFile");
-  const file = fileInput.files[0];
+if (loadButton) {
+  loadButton.addEventListener("click", loadDocuments);
+}
 
-  if (!file) {
-    dashboardMessage.textContent = "Please select a document first.";
-    return;
-  }
+// Upload a document
+const uploadButton = document.getElementById("uploadButton");
 
-  const formData = new FormData();
-  formData.append("file", file);
+if (uploadButton) {
+  uploadButton.addEventListener("click", async () => {
+    const fileInput = document.getElementById("documentFile");
+    const file = fileInput?.files?.[0];
 
-  dashboardMessage.textContent = "Uploading...";
+    if (!file) {
+      dashboardMessage.textContent = "Please select a document first.";
+      return;
+    }
 
-  try {
-    await apiRequest("/documents/upload", {
-      method: "POST",
-      body: formData
-    });
+    const formData = new FormData();
+    formData.append("file", file);
 
-    dashboardMessage.textContent = "Upload successful!";
-    fileInput.value = "";
-    await loadDocuments();
-  } catch (error) {
-    dashboardMessage.textContent = error.message;
-  }
-});
+    dashboardMessage.textContent = "Uploading...";
 
+    try {
+      await apiRequest("/documents/upload", {
+        method: "POST",
+        body: formData
+      });
+
+      dashboardMessage.textContent = "Upload successful!";
+      fileInput.value = "";
+      await loadDocuments();
+    } catch (error) {
+      dashboardMessage.textContent = error.message;
+    }
+  });
+}
+
+// Restore the dashboard if the session has a token
 if (token) {
   showDashboard();
 }
