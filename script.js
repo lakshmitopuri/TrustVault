@@ -1,4 +1,4 @@
-const API = "http://127.0.0.1:5000";
+const API = "https://trustvault-2-mwgv.onrender.com";
 
 const loginForm = document.getElementById("loginForm");
 const loginSection = document.querySelector(".login-card");
